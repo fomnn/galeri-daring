@@ -1,7 +1,7 @@
 {
-  "name": "galeri daring",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "vue-vite"
+	"name": "galeri daring",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "vue-vite"
 }
