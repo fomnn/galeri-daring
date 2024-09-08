@@ -1,15 +1,74 @@
 <script lang="ts" setup>
+import { useToast } from '@/components/ui/toast/use-toast'
 import { Camera, CameraResultType } from '@capacitor/camera'
-import { Toast } from '@capacitor/toast'
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem'
+import { FilePicker } from '@capawesome/capacitor-file-picker'
 import { IonContent, IonPage } from '@ionic/vue'
-
+import { image } from 'ionicons/icons'
 import { onMounted, useTemplateRef } from 'vue'
 
 const imageElement = useTemplateRef('imageElement')
 
+const { toast } = useToast()
+
+async function writeSecretFile() {
+	const result = await Filesystem.writeFile({
+		path: 'secrets/text.txt',
+		data: 'This is a sigma',
+		directory: Directory.Documents,
+		encoding: Encoding.UTF8,
+	})
+
+	toast({
+		title: 'Hello',
+		description: result.uri,
+	})
+}
+
+async function readDir() {
+	const result = await Filesystem.readdir({
+		directory: Directory.Documents,
+		path: 'images',
+	})
+
+	const file = await Filesystem.readFile({
+		path: `images/${result.files[0].name}`,
+		directory: Directory.Documents,
+		encoding: Encoding.UTF8,
+	})
+
+	toast({
+		title: 'Hello',
+		// description: result.files[0].name,
+    description: file.data.toString(),
+	})
+
+  if (imageElement.value && file.data) {
+    imageElement.value.src = `data:image/jpeg;base64,${file.data.toString()}`
+  }
+}
+
 async function showHelloToast() {
-	await Toast.show({
-		text: 'Hello!',
+	toast({
+		title: 'Hello',
+		description: 'Hello from the toast',
+	})
+}
+
+async function pickFromGallery() {
+	const result = await FilePicker.pickImages({ limit: 1, readData: true })
+
+	if (result.files.length !== 0 && result.files[0].data) {
+		await Filesystem.writeFile({
+			data: result.files[0].data,
+			path: `images/${result.files[0].name}`,
+			directory: Directory.Documents,
+		})
+	}
+
+	toast({
+		title: 'Hello',
+		description: result.files[0].name,
 	})
 }
 
@@ -28,8 +87,10 @@ async function takePicture() {
 
 	// Can be set to the src of an image now
 	if (imageElement.value && imageUrl) {
-		// eslint-disable-next-line no-console
-		console.log(imageUrl)
+		toast({
+			title: 'hehe',
+			description: imageUrl,
+		})
 		imageElement.value.src = imageUrl
 	}
 }
@@ -47,6 +108,15 @@ onMounted(() => {
 					<img ref="imageElement" alt="placeholder" class="w-full h-96 object-cover bg-slate-400 rounded-lg">
 					<button class="bg-slate-900 text-white px-4 py-2 rounded-md" @click="takePicture">
 						Take Picture
+					</button>
+					<button class="bg-slate-900 text-white px-4 py-2 rounded-md" @click="pickFromGallery">
+						Pink from Gallery
+					</button>
+					<button class="bg-slate-900 text-white px-4 py-2 rounded-md" @click="writeSecretFile">
+						Write Secret File
+					</button>
+					<button class="bg-slate-900 text-white px-4 py-2 rounded-md" @click="readDir">
+						Read file
 					</button>
 					<button class="bg-slate-900 text-white px-4 py-2 rounded-md" @click="showHelloToast">
 						Say hello
