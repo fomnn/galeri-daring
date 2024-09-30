@@ -37,8 +37,8 @@ import './theme/variables.css'
 import './assets/index.css'
 
 const app = createApp(App)
-	.use(IonicVue)
-	.use(router)
+app.use(IonicVue)
+app.use(router)
 
 router.isReady().then(() => {
 	app.mount('#app')
