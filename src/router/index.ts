@@ -23,7 +23,19 @@ const routes: Array<RouteRecordRaw> = [
 				path: 'upload',
 				component: () => import('@/views/upload/UploadPage.vue'),
 			},
+			{
+				path: 'take_photo',
+				component: () => import('@/views/take_photo/TakePhotoPage.vue'),
+			},
 		],
+	},
+	{
+		path: '/upload/:albumId',
+		component: () => import('@/views/upload/albums/UploadAlbumsPage.vue'),
+	},
+	{
+		path: '/upload/:albumId/:momentId',
+		component: () => import('@/views/upload/albums/moments/UploadMomentsPage.vue'),
 	},
 	{
 		path: '/auth/login',

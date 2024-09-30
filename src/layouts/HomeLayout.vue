@@ -19,7 +19,12 @@ import { library, playCircle, radio, search } from 'ionicons/icons'
 					<IonLabel>Upload</IonLabel>
 				</IonTabButton>
 
-				<IonTabButton tab="library" href="/library" class="justify-between py-2">
+				<IonTabButton tab="take_photo" href="/take_photo" class="justify-between py-2">
+					<Icon icon="ic:twotone-camera" class="text-3xl" />
+					<IonLabel>Take Photo</IonLabel>
+				</IonTabButton>
+
+				<IonTabButton tab="library" href="/upload" class="justify-between py-2">
 					<Icon icon="material-symbols:account-circle-outline" class="text-3xl" />
 					<IonLabel>Profil</IonLabel>
 				</IonTabButton>
